@@ -15,11 +15,21 @@
  *
  */
 
-class CalendarEntry {
-  final DateTime date;
-  final bool today;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-  const CalendarEntry(this.date, this.today);
+part 'date.freezed.dart';
+part 'date.g.dart';
+
+@freezed
+class CalendarEntry with _$CalendarEntry {
+  const factory CalendarEntry({
+    required DateTime date,
+    required bool today,
+  }) = _CalendarEntry;
+
+  factory CalendarEntry.fromJson(Map<String, Object?> json) =>
+      _$CalendarEntryFromJson(json);
 }
 
 /// Returns the dates.
@@ -30,8 +40,8 @@ List<CalendarEntry> getDates(int month, int year) {
   var next = DateTime(year, month);
   while (next.month == month) {
     result.add(CalendarEntry(
-        next,
-        next.day == today.day &&
+        date: next,
+        today: next.day == today.day &&
             next.month == today.month &&
             next.year == today.year));
     next = next.add(const Duration(days: 1));
